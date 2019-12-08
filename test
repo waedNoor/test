@@ -1,0 +1,84 @@
+	public static void incomeMsg() {
+		
+		ChatDTO chatdto = new ChatDTO();
+		MetadataDTO metadataDTO= new MetadataDTO();
+		metadataDTO.setBankName("Arab_bank");
+		metadataDTO.setChannel(Channel.HUB);
+		metadataDTO.setCountry("JO");
+		metadataDTO.setMobileNumber("0962000");
+		chatdto.setMetadataDTO(metadataDTO);
+		chatdto.setMessageId("0000000");
+		ChatEntityBuilder chatEntityBuilder = new ChatEntityBuilder();
+		byte chatData[] = chatEntityBuilder.build(chatdto).toByteArray();
+
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> chatHttpEntityAsBytesArray = new HttpEntity<>(chatData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Message/Income/V01", chatHttpEntityAsBytesArray, HttpStatus.class);
+
+		
+	}
+public static void reassignAgent() {
+		
+		ChatDTO chatdto = new ChatDTO();
+		MetadataDTO metadataDTO= new MetadataDTO();
+		metadataDTO.setBankName("Arab_bank");
+		metadataDTO.setChannel(Channel.HUB);
+		metadataDTO.setCountry("JO");
+		metadataDTO.setMobileNumber("0962000");
+		chatdto.setMetadataDTO(metadataDTO);
+		chatdto.setMessageId("0000000");
+		ChatEntityBuilder chatEntityBuilder = new ChatEntityBuilder();
+		byte chatData[] = chatEntityBuilder.build(chatdto).toByteArray();
+
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> chatHttpEntityAsBytesArray = new HttpEntity<>(chatData);
+		chatRestTemplate.postForEntity("localhost:7070/Agent/Reassign/V01", chatHttpEntityAsBytesArray, HttpStatus.class);
+	}
+	public static void addNewAgent() {
+		
+		AgentDTO agentDto =new AgentDTO();
+		agentDto.setActiveSessions(0);
+		agentDto.setMaxSessions(20);
+		agentDto.setName("mohanad2");
+		agentDto.setUsername("mohanad2");
+		agentDto.setStatus(AgentDTO.Status.OFFLINE);
+		
+		agentDto.setNumberOfChatHistory(20);
+		AgentEntityBuilder agentEntityBuilder = new AgentEntityBuilder();
+		byte agentData[] = agentEntityBuilder.build(agentDto).toByteArray();
+	
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> agentHttpEntityAsBytesArray = new HttpEntity<>(agentData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Agent/Add/CC/Agent/waed/V01", agentHttpEntityAsBytesArray, HttpStatus.class);
+	
+		
+	}
+	public static void updateExistingAgent() {
+		
+		AgentDTO agentDto =new AgentDTO();
+		
+		agentDto.setUsername("husam");
+		agentDto.setNumberOfChatHistory(40);
+		AgentEntityBuilder agentEntityBuilder = new AgentEntityBuilder();
+		byte agentData[] = agentEntityBuilder.build(agentDto).toByteArray();
+		
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> agentHttpEntityAsBytesArray = new HttpEntity<>(agentData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Agent/Update/CC/Agent/hesham/V01", agentHttpEntityAsBytesArray, HttpStatus.class);
+		
+		
+	}
+	public static void getExistingAgent() {
+		
+		AgentDTO agentDto =new AgentDTO();
+	
+		agentDto.setUsername("husam");
+		AgentEntityBuilder agentEntityBuilder = new AgentEntityBuilder();
+		byte agentData[] = agentEntityBuilder.build(agentDto).toByteArray();
+	
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> agentHttpEntityAsBytesArray = new HttpEntity<>(agentData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Agent/GetByUserName/V01", agentHttpEntityAsBytesArray, HttpStatus.class);
+	
+		
+	}
