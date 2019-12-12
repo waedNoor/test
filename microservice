@@ -1,0 +1,501 @@
+Microservices Design Principles & Guidelines
+ 
+Keywords
+
+Microservices, Architectural Style, Architecture Pattern, Ecosystem, Deployment Patterns,Security Governance.
+
+Abstract
+
+The purpose of this document is to provide a guide for microservices architecture and implementation patterns. A microservice is a lightweight and independent service that performs single functions and collaborates with other similar services using a well-defined interface. We will discuss the common principles behind this approach, its advantages and disadvantages as well as its usage in Arab Bank applications.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Table of Contents
+1.	Microservices	2
+a.	Introduction	2
+b.	Definitions	3
+c.	Benefits of Microservices Architectural Structure	4
+2.	Architecture Principles	5
+a.	Single Responsibility Principle	1
+b.	Domain Driven Design	1
+c.	Hexagonal Architecture	1
+3.	Decomposition Patterns	1
+a.	Decompose by Business Capability	1
+b.	Decompose by Subdomain	1
+4.	Integration Patterns	1
+a.	API Gateway	1
+b.	Backend for Frontend	1
+5.	Data management	1
+a.	Database per Service	1
+b.	Shared Database	1
+c.	Saga	1
+d.	API Composition	1
+e.	CQRS	1
+f.	Domain Event	1
+g.	Event Sourcing	1
+6.	Cross Cutting Patterns
+a.	Microservices Chassis
+b.	Externalized Configuration	1
+c.	Service Discovery	
+d.	Client-side Discovery	1
+e.	Server-side Discovery	1
+f.	Service Registry	1
+g.	Self Registration	1
+h.	3rd Party Registration	1
+7.	Reliability	1
+a.	Circuit Breaker 	1
+
+	
+
+
+
+Part 1 - Overview
+The following section aims to provide high level definitions of the technology, design patterns and methodologies used in microservices development. It is aimed as a reference for further reading and should not be viewed as an be-all-end-all reference material for microservices in general, rather it provides a starting point for further learning about microservices and the supporting technologies
+
+1.	MICROSERVICES
+
+a)	Introduction
+Application architecture is an important point to consider when designing applications, over the years, many different software development paradigms have come and gone, a constant theme, however, has been the need to componentize software systems in a modular way. Modularising software is beneficial for many reasons. It makes the source code easier to understand and follow, developers can visualize the codebase and know roughly where to look for defects – thereby making maintenance more efficient.
+
+Well-architected software systems are also easier to scale should the number of users using your application increase, not to mention, if new developers join your team, a well-architected system can make the onboarding process quicker and reduce developer rationing time as everyone is coding to a specific set of standards.
+
+There are many approaches to architecting software projects such as N-Tiered, Service Oriented Architecture (SOA) or Microservices Architecture to name a few.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+b)	Definitions
+What is Microservices Architecture?
+ 
+Microservices - also known as the microservices architecture is a form of service-oriented architecture (SOA) whereby software applications are built as a collection of loosely coupled services, as opposed to one monolithic software application. Each microservice can be created independently from the other, or even in a completely different programming language and run on their own.
+
+At the core of it all, each microservice tries to satisfy the specific user story or business requirement that you’re working on. It is an ideal architectural design pattern in today’s ever increasing interconnected world and helps support multiple platforms and devices that can span the cloud, mobile, Internet of Things (IoT) and even wearable devices.
+
+Services communicate using either synchronous protocols such as HTTP/REST or asynchronous protocols such as AMQP. Each service has its own database in order to be decoupled from other services. Data consistency between services is maintained using the Saga pattern.
+
+c)	Benefits of Microservices Architectural Structure	
+
+ 
+As an architectural practice, microservices architecture has been growing in popularity in recent years, this is down the benefits that it can bring software development teams and the enterprise. As software increases in complexity, being able to componentize functional areas in the application into sets of independent microservices can yield many benefits, which include, but are not limited to the following: more efficient debugging, no more jumping through multiple layers of an application, and in essence, better fault isolation.
+
+●	Accelerated software delivery – multiple programming languages can be used thereby giving you access to a wider developer talent pool.
+●	Easier to understand the codebase – increased productivity as each service represents a single functional area or business use case.
+●	Scalability – componentized microservices naturally lend themselves to being integrated with other applications or services via industry-standard interfaces such as REST.
+●	Fault tolerance – reduced downtime due to more resilient services
+●	Reusability – as microservice are organized around business cases and not a particular project, due to their implementation, they can be reused and easily slotted into other projects or services, thereby reducing costs.
+●	Deployment – as everything is encapsulated into separate microservices, you only need to deploy the services that you’ve changed and not the entire application. A key tenet of microservices development is ensuring that each service is loosely coupled with existing services.
+
+2. ARCHITECTURE PRINCIPLES
+In order to create a scalable and maintainable architecture, the implemented solution relies on the following design principles, methodologies and patterns.
+
+a)	Single Responsibility Principle
+To reduce coupling, dependency and reduce complexity the apps follow a Single Responsibility Principle, where each class/module is designed to be responsible for a single area of functionality, abstracting it from additional complexities and dependencies wherever possible.
+A simple example of this would be logging and exception handling within classes, where instead of having the classes handle these operations directly, and abstraction or intermediary class is created that handled, how and where these exceptions and logs need to be addressed. 
+
+b)	Domain Driven Design
+Domain Driven Design, shifts the focus from objects to business view points where each created entity serves a specific business role or “domain” of operation, resulting in simplified data objects and representation, and less coupled business flows (more domain models can be added without impacting existing functionality) at the expense of a slight increase in data duplication.
+An example of this in the context of a bank, that an employee of a bank that is also a customer, can be represented by different domain model, e.g. employee vs customer we can consolidate those in a single object however through the domain driven design we tend to split them to serve the different domains. Should the same person becomes a shareholder in the future for example, a completely different entity “shareholder” can be used to represent him instead of overloading the existing object. Each of the domain models would have it’s own set of operations, functions and business flow independent of the other domains 
+c)	Hexagonal Architecture
+Sometimes also called Ports and Adapters architectures, is a mechanism for decoupling architecture implementations through the creation of unified “adapter & ports” for communication. Making component more interchangeable and testable.
+The implementation of Hexagonal Architecture is based on three principles and techniques:
+●	Explicitly separate Application, Domain, and Infrastructure
+●	Dependencies are going from Application and Infrastructure to the Domain
+●	Isolate the boundaries by using Ports and Adapters 
+
+3. DECOMPOSITION PATTERNS
+
+a)	Decompose by Business Capability
+
+b)	Decompose by Subdomain
+
+
+4. INTEGRATION PATTERNS
+
+a)	API Gateway
+
+b)	Backend for Frontend
+
+
+5. DATA MANAGEMENT
+
+a)	Database per Service
+
+b)	Shared Database
+
+c)	Saga
+
+d)	API Composition
+
+e)	CQRS
+
+f)	Domain Event
+
+g)	Event Sourcing
+
+
+6. CROSS CUTTING PATTERNS
+
+a)	Microservices Chassis
+
+b)	Externalized Configuration
+
+c)	Service Discovery
+
+d)	Client-side Discovery
+
+e)	Server-side Discovery
+
+f)	Service Registry
+
+g)	Self Registration
+
+h)	3rd Party Registration
+
+
+7. RELIABILITY
+
+a)	Circuit Breaker
+
+	 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	 	
+	
+	 
+
+Part 2 - Application Design
+
+In this section, the document will define the different technical points that go into building micro services generally, with a focus on the implementation details of Arab Bank specifically. It can serve as an entry point for developers & architects to understand how to build a microservice.
+
+
+1.	Features 	 	
+RESTful Web Service Family
+The project contains examples of Create, Read, Update, and Delete web services. 	 	
+Business Services
+The project demonstrates the encapsulation of business behaviors into domain-specific, Spring-managed components annotated with @Service.	 	
+Spring Data JPA
+The project shows the use of Spring Data JPA repositories, @Repository, for data access and management. Illustrates the @Entity annotation and other JPA entity model annotations for attribute and relationship mapping.	 	
+MongoDB NoSQL Database
+The project also illustrates integration with MongoDB.	
+Memcashed as Cache Management
+The project contains examples of the @Cacheable, @CachePut, and @CacheEvict annotations on business service methods.	 	
+Spring Profiles
+The project demonstrates how to use Spring Profiles to activate (or deactivate) application components and configuration.	 	
+Unit Tests
+The project contains unit test examples for standard components such as business services or batch beans and examples for the web service endpoints using Mock objects. Perform complete end-to-end testing with Spring MVC mocking or leverage Mockito to stub or spy business components.
+Actuator Monitoring and Management
+The project illustrates the use of Spring Boot Actuator for application monitoring and management. The application demonstrates the recording of custom metrics and the creation of custom health checks. Also, custom Maven attributes is incorporated into the Actuator info endpoint.
+API Documentation Generator
+The project includes Swagger integration to automatically generate API docs for the RESTful web service endpoints. 	 	 	
+Docker Support
+The project ships with an example Dockerfile which creates a minimal, best practices Docker image for hosting Spring Boot Applications with OpenJDK.
+
+
+
+
+
+
+
+
+
+
+
+2.	Technology stack
+	 	
+Intellij: IDE and plugins.
+Java: Programming language.
+Spring Boot 2.0: Server side framework.
+Docker: Containerising framework.
+MongoDB 4.0.4: NoSQL database.
+Swagger 2: API documentation.
+KAFKA : Envent Streaming.
+Memcached: Distributed Caching system.
+Undertow: Web Server.
+Maven: software project management and comprehension tool.
+JUnit 5 with Jupiter: Unit Test tools.
+logback: logging systems.
+Sonarqube: security scan.
+Kubernetes: automating deployment, scaling, and management of containerized applications.
+Istio: service mesh.
+
+3.	Source Code Style
+
+Engineers should follow the definition of coding standards for source code in 	the Java Programming Language as follow:
+	 	
+1) Source file basics
+
+1.1) File name
+The source file name consists of the case-sensitive name of the top-level class it contains, plus the .java extension.
+1.2) File encoding: UTF-8
+Source files are encoded in UTF-8.
+	 	 	
+2) Source file structure
+
+2.1 License or copyright information, if present
+If license or copyright information belongs in a file, it belongs here.
+2.2 Package statement
+The package statement is not line-wrapped.
+2.3 Import statements
+2.3.1 No wildcard imports
+Wildcard imports, static or otherwise, are not used.
+
+2.3.2 No line-wrapping
+Import statements are not line-wrapped. 
+
+2.3.3 Ordering and spacing
+Imports are ordered as follows:
+
+* All static imports in a single block.
+* All non-static imports in a single block.
+Note: If there are both static and non-static imports, a single blank line separates the two blocks. There are no other blank lines between import statements.
+
+Within each block the imported names appear in ASCII sort order. (Note: this is not the same as the import statements being in ASCII sort order, since '.' sorts before ';'.)
+
+2.3.4 No static import for classes
+Static import is not used for static nested classes. They are imported with normal imports.
+
+2.4 Class declaration
+2.4.1 Exactly one top-level class declaration
+Each top-level class resides in a source file of its own.
+
+2.4.2 Ordering of class contents
+The order you choose for the members and initializers of your class can have a great effect on learnability. However, there's no single correct recipe for how to do it; different classes may order their contents in different ways.
+
+What is important is that each class uses some logical order, which its maintainer could explain if asked. For example, new methods are not just habitually added to the end of the class, as that would yield "chronological by date added" ordering, which is not a logical ordering.
+
+2.4.2.1 Overloads: never split
+When a class has multiple constructors, or multiple methods with the same name, these appear sequentially, with no other code in between (not even private members).
+
+	 	 	
+3) Naming
+
+3.1 Rules common to all identifiers
+Identifiers use only ASCII letters and digits, and, in a small number of cases noted below, underscores. Thus each valid identifier name is matched by the regular expression \w+ .
+
+In Google Style, special prefixes or suffixes are not used. For example, these names are not Google Style: name_, mName, s_name and kName.
+
+3.2 Rules by identifier type
+3.2.1 Package names
+Package names are all lowercase, with consecutive words simply concatenated together (no underscores). For example, com.example.deepspace, not com.example.deepSpace or com.example.deep_space.
+
+3.2.2 Class names
+Class names are written in UpperCamelCase.
+
+Class names are typically nouns or noun phrases. For example, Character or ImmutableList. Interface names may also be nouns or noun phrases (for example, List), but may sometimes be adjectives or adjective phrases instead (for example, Readable).
+
+There are no specific rules or even well-established conventions for naming annotation types.
+
+Test classes are named starting with the name of the class they are testing, and ending with Test. For example, HashTest or HashIntegrationTest.
+
+3.2.3 Method names
+Method names are written in lowerCamelCase.
+
+Method names are typically verbs or verb phrases. For example, sendMessage or stop.
+
+Underscores may appear in JUnit test method names to separate logical components of the name, with each component written in lowerCamelCase. One typical pattern is <methodUnderTest>_<state>, for example pop_emptyStack. There is no One Correct Way to name test methods.
+
+3.2.4 Constant names
+Constant names use CONSTANT_CASE: all uppercase letters, with each word separated from the next by a single underscore. But what is a constant, exactly?
+
+Constants are static final fields whose contents are deeply immutable and whose methods have no detectable side effects. This includes primitives, Strings, immutable types, and immutable collections of immutable types. If any of the instance's observable state can change, it is not a constant. Merely intending to never mutate the object is not enough.These names are typically nouns or noun phrases.
+
+3.2.5 Non-constant field names
+Non-constant field names (static or otherwise) are written in lowerCamelCase.
+
+These names are typically nouns or noun phrases. For example, computedValues or index.
+
+3.2.6 Parameter names
+Parameter names are written in lowerCamelCase.
+
+One-character parameter names in public methods should be avoided.
+
+3.2.7 Local variable names
+Local variable names are written in lowerCamelCase.
+
+Even when final and immutable, local variables are not considered to be constants, and should not be styled as constants.
+
+3.2.8 Type variable names
+Each type variable is named in one of two styles:
+
+A single capital letter, optionally followed by a single numeral (such as E, T, X, T2)
+A name in the form used for classes (see Section 5.2.2, Class names), followed by the capital letter T (examples: RequestT, FooBarT).
+3.3 Camel case: defined
+Beginning with the prose form of the name:
+
+Convert the phrase to plain ASCII and remove any apostrophes. For example, "Müller's algorithm" might become "Muellers algorithm".
+Divide this result into words, splitting on spaces and any remaining punctuation (typically hyphens).
+Recommended: if any word already has a conventional camel-case appearance in common usage, split this into its constituent parts (e.g., "AdWords" becomes "ad words"). Note that a word such as "iOS" is not really in camel case per se; it defies any convention, so this recommendation does not apply.
+Now lowercase everything (including acronyms), then uppercase only the first character of:
+... each word, to yield upper camel case, or
+... each word except the first, to yield lower camel case
+Finally, join all the words into a single identifier.
+	 	 	
+4.	Arab Bank Conventions
+
+Project Naming Conventions
+Pattern: <Category>-<application-name>-<tech stack>-<application-type>.
+E.X. ab-skeleton-java-services
+Microservice Naming Conventions
+Pattern: <application name><tech stack>-<application type>
+E.X. skeleton-java-ms
+Package Naming Conventions
+Pattern: <tech stack>.com.arabbank.<application name>
+E.X. java.com.arabbank.skeleton.
+
+
+
+
+5.	Project Structure
+
+Each MS should have the below configuration files:
+
+1.	POM files:
+The Spring boot maven plugin provides many convenient features:
+It collects all the jars on the classpath and builds a single, runnable "MS-jar", which makes it more convenient to execute and transport your service.
+It searches for the public static void main() method to flag as a runnable class.
+It provides a built-in dependency resolver that sets the version number to match Spring Boot dependencies. You can override any version you wish, but it will default to Boot’s chosen set of versions.
+
+1.	Parent POM 
+consist of the list of all modules as well as common dependencies and properties inherited by child projects. The default versions of Java to use, the default versions of dependencies that Spring Boot uses, and the default configuration of the Maven plugins.
+ToDo: Describe Arab Bank parent file
+2.	Child POM
+consist of specific dependencies related with MS business logic.
+ToDo: Describe Arab Bank Child file
+
+
+
+
+2.	Configuration files
+	 	
+Pattern that allows an application to run in multiple environments (e.g. development, test, production) without any modifications in the application itself
+1.	application.yml
+
+The Spring application takes application.yml in the src/resources folder as the default profile , Spring Boot will load and parse .yml file automatically and bind the values into the classes which annotated with @ConfigurationProperties.
+ToDo: Describe Arab Bank application.yml
+2.	application-dev.yml 
+We used this command “ -Dspring.config.location = path/” in VM option to change the default YML file to define a custom properties related with development environment.
+ToDo: Describe Arab Bank application-dev.yml
+
+3.	logback-spring
+
+It's used to customize logging pattern, separate specifications for console and file output, and with a decent rolling policy to avoid generating huge log files.
+
+Spring Boot has a LoggingSystem abstraction that attempts to configure logging based on the content of the classpath. If Logback is available, it is the first choice. So we added logback.xml to let Spring Boot picks up the native configuration from it.
+ToDo: Describe Arab Bank application-dev.yml
+
+
+4.	Resource Bundle
+
+ResourceBundle enables our application to load data from distinct files containing locale-specific data thats will help us to develop a multilingual application, avoid hardcoding values, allowing us to expand the supported Locales by simply adding new Locale files allowing our application to be smoothly modified and maintained.
+
+
+In our Skeleton micro-service we used ResourceBundle to localized error messages as below:
+●	messages.properties: its contain error source and unique code
+EX: <Error Class Name>-<CODE>=000
+       <Error Class Name>-<SOURCE>=MS Name
+●	messgaes-ar.properties: its contain error message in Arabic
+EX: <Error Class Name>-<MESSAGE>= Arabic error message
+●	messgaes-en.properties: its contain error in English
+EX: <Error Class Name>-<MESSAGE>= English error message
+
+5.	Docker 
+Creates a minimal, best practices Docker image for hosting Spring Boot Applications with OpenJDK.
+1.	Dockerfile 
+File format that it uses to specify the "layers" of an image.
+●	FROM: The keyword FROM, tells Docker to use a given image with its tag as build-base. If this image is not in the local library, an online-search on DockerHub, or on any other configured remote-registry, is performed
+●	MAINTAINER: A MAINTAINER is usually an email address, identifying the author of an image
+●	RUN: With the RUN command, we're executing a shell command-line within the target system. Here we utilizing Alpine Linux's package manager apk to install the Java 8 OpenJDK
+●	ENTRYPOINT/CMD: This will be the executable to start when the container is booting. We must define them as JSON-Array, because we will use an ENTRYPOINT in combination with a CMD for some application arguments
+●	EXPOSE: Here we are telling Docker, on which port our application is listing. This port will be published to the host, when the container is booting.
+●	ToDo: Describe Arab Bank Dockerfile
+
+2.	Docker-compose.yml 
+Docker Compose comes with an own build-file in YAML format and is better suited in managing multiple containers
+●	ToDo: Describe Arab Bank Dockerfile
+
+Kubefile.yml 
+
+Configuration file that's used to configure Spring Boot applications on Kubernetes cluster. It has three parts as follows:  
+●	Service
+a Service is an abstraction which defines a logical set of Pods and a policy by which to access them (sometimes this pattern is called a micro-service). The set of Pods targeted by a Service is usually determined by a selector.
+
+We are usually running microservices on Kubernetes using Docker containers. One or more containers are grouped by pods, which are the smallest deployable units created and managed in Kubernetes. A good practice is to run only one container inside a single pod. If you would like to scale up your microservice, you would just have to increase the number of running pods. All running pods that belong to a single microservice are logically grouped with Kubernetes Service. This service may be visible outside the cluster and is able to load balance incoming requests between all running pods.
+
+●	Deployment
+
+Deployment is a single instance of an application in Kubernetes, which might consist of either a single container or a small number of containers that are tightly coupled and that share resources. You can define Deployments to create new ReplicaSets, or to remove existing Deployments and adopt all their resources with new Deployments.
+
+●	ConfigMap
+
+ConfigMaps is the Kubernetes counterpart of the Spring Boot externalized configuration. ConfigMaps is a simple key/value store, which can store simple values to files.
+
+
+6.	GitFlow 
+
+Gitflow is a mechincaism of using git that allows for easier feature and release management. a summarized description and flow are documented below based on the detailed information found at: https://datasift.github.io/gitflow/IntroducingGitFlow.html
+
+Parallel Development: Isolating new tasks from completed. New tasks (such as stories and non-urgent bugs) will be part of feature branches and are only merged back into the main body of code when the developer(s) is happy that the code is ready for release.
+Collaboration:  Feature branches make it easier for two or more developers to collaborate on the same feature.
+ 
+Release Staging Area: As new development is completed it gets merged back into the develop branch, which is a staging area for all completed features that have not yet been released. So, when the next release is branched off of develop it will automatically contain all of the new items that have been completed.
+ 
+Support for Emergency Fixes: GitFlow supports hotfix branches i.e. branches made from a tagged release. You can use these to make an emergency change safe in the knowledge that the hotfix will only contain your emergency fix.
+ 
+DevOps Integration: Pull requests are created to conduct code review before merging the changes. Upon the approval of pull requests the following will be triggered:
+1.	Build and deployment for the related branch
+2.	Automated test suites based on the targeted areas
+3.	Security scans
+4.	Any other automated scripts required within the process
+ 
+Typical Flow
+1.	Feature branches are branched off of the develop branch and finished features and fixes are merged back into the develop branch when they are ready for release
+2.	When it is time to make a release a release branch is created off of develop
+3.	The code in the release branch is deployed onto a suitable test environment, tested and any problems are fixed directly in the release branch. This deploy -> test -> fix -> redeploy -> retest cycle continues until you are happy that the release is good enough to release to customers
+4.	When the release is finished, the release branch is merged into master and into develop too which makes sure that any changes made in the release branch are not accidentally lost by new development.
+5.	The master branch tracks released code only. The only commits to master are merges from release branches and hotfix branches
+6.	Hotfix branches are used to create emergency fixes, they are branched directly from a tagged release in the master branch and when finished are merged back into both master and develop to make sure that the hotfix is not accidentally lost when the next regular release occurs.
+
+Diagram: GitFlow with DevOps Integration Process Sample
+
+  
+
+
+
