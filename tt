@@ -1,0 +1,194 @@
+package com.innovationgarage.chat.engine.dispatcher;
+
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+
+import javax.net.ssl.SSLContext;
+
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.ssl.TrustStrategy;
+import org.modelmapper.ModelMapper;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.PropertySources;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+
+import com.abfintech.chat.engine.agent.model.builder.AgentEntityBuilder;
+import com.abfintech.chat.engine.agent.model.entity.dto.AgentDTO;
+import com.abfintech.chat.engine.chat.model.builder.ChatEntityBuilder;
+import com.abfintech.chat.engine.chat.model.entity.dto.ChatDTO;
+import com.abfintech.chat.engine.chat.model.entity.dto.MetadataDTO;
+import com.abfintech.chat.engine.chat.model.entity.dto.MetadataDTO.Channel;
+import com.innovationgarage.chat.engine.protobuf.builder.impl.TemplateCategoryEntityBuilder;
+import com.innovationgarage.chat.engine.protobuf.entity.domain.TemplateCategoryDomain;
+
+@SpringBootApplication
+@ComponentScan(basePackages = { //
+		"com.innovationgarage.chat.engine.dispatcher", //
+		"com.innovationgarage.chat.engine.jpa", //
+		"com.innovationgarage.chat.engine.protobuf", //
+		"com.abfintech.gateway.sme.loan.search.model", //
+		"com.abfintech.gateway.core.customer.search.model", //
+		"com.abfintech.chat.engine.chat.model", //
+		"com.abfintech.chat.engine.agent.model" })
+@PropertySources({ //
+		@PropertySource("classpath:chat_engine_dispatcher_application.properties"), //
+		@PropertySource("classpath:chat_engine_jpa_application.properties"), //
+		@PropertySource("classpath:chat_engine_protobuf_application.properties"), //
+})
+@EnableCaching
+public class InnovationGarageChatEngineDispatcherApplication {
+
+	@Bean
+	public ModelMapper modelMapper() {
+		return new ModelMapper();
+	}
+
+	public static void main(String[] args) {
+		SpringApplication.run(InnovationGarageChatEngineDispatcherApplication.class, args);
+	}
+
+	@Bean
+	public RestTemplate getRestTemplate() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+
+		TrustStrategy acceptingTrustStrategy = new TrustStrategy() {
+			@Override
+			public boolean isTrusted(X509Certificate[] x509Certificates, String s) throws CertificateException {
+				return true;
+			}
+		};
+
+		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
+		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext, new NoopHostnameVerifier());
+		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setHttpClient(httpClient);
+
+		RestTemplate restTemplate = new RestTemplate(requestFactory);
+		return restTemplate;
+	}
+public static void incomeMsg() {
+		
+		ChatDTO chatdto = new ChatDTO();
+		MetadataDTO metadataDTO= new MetadataDTO();
+		metadataDTO.setBankName("Arab_bank");
+		metadataDTO.setChannel(Channel.HUB);
+		metadataDTO.setCountry("JO");
+		metadataDTO.setMobileNumber("11");
+		chatdto.setMetadataDTO(metadataDTO);
+		chatdto.setMessageId("0000000");
+		ChatEntityBuilder chatEntityBuilder = new ChatEntityBuilder();
+		byte chatData[] = chatEntityBuilder.build(chatdto).toByteArray();
+
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> chatHttpEntityAsBytesArray = new HttpEntity<>(chatData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Message/Income/V01", chatHttpEntityAsBytesArray, HttpStatus.class);
+
+		
+	}
+public static void reassignAgent() {
+		
+		ChatDTO chatdto = new ChatDTO();
+		MetadataDTO metadataDTO= new MetadataDTO();
+		metadataDTO.setBankName("Arab_bank");
+		metadataDTO.setChannel(Channel.HUB);
+		metadataDTO.setCountry("JO");
+		metadataDTO.setMobileNumber("0962000");
+		chatdto.setMetadataDTO(metadataDTO);
+		chatdto.setMessageId("0000000");
+		ChatEntityBuilder chatEntityBuilder = new ChatEntityBuilder();
+		byte chatData[] = chatEntityBuilder.build(chatdto).toByteArray();
+
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> chatHttpEntityAsBytesArray = new HttpEntity<>(chatData);
+		chatRestTemplate.postForEntity("localhost:7070/Agent/Reassign/V01", chatHttpEntityAsBytesArray, HttpStatus.class);
+	}
+	public static void addNewAgent() {
+		
+		AgentDTO agentDto =new AgentDTO();
+		agentDto.setActiveSessions(0);
+		agentDto.setMaxSessions(20);
+		agentDto.setName("ww");
+		agentDto.setUsername("ww");
+		agentDto.setStatus(AgentDTO.Status.OFFLINE);
+		
+		AgentEntityBuilder agentEntityBuilder = new AgentEntityBuilder();
+		byte agentData[] = agentEntityBuilder.build(agentDto).toByteArray();
+	
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> agentHttpEntityAsBytesArray = new HttpEntity<>(agentData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Agent/Add/CC/Agent/waed/V01", agentHttpEntityAsBytesArray, HttpStatus.class);
+	
+		
+	}
+	public static void updateExistingAgent() {
+		
+		AgentDTO agentDto =new AgentDTO();
+		
+		agentDto.setUsername("jad");
+		agentDto.setNumberOfChatHistory(40);
+		AgentEntityBuilder agentEntityBuilder = new AgentEntityBuilder();
+		byte agentData[] = agentEntityBuilder.build(agentDto).toByteArray();
+		
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> agentHttpEntityAsBytesArray = new HttpEntity<>(agentData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Agent/Update/CC/Agent/hesham/V01", agentHttpEntityAsBytesArray, HttpStatus.class);
+		
+		
+	}
+	public static void getExistingAgent() {
+		
+		AgentDTO agentDto =new AgentDTO();
+		
+		agentDto.setUsername("husam");
+		AgentEntityBuilder agentEntityBuilder = new AgentEntityBuilder();
+		byte agentData[] = agentEntityBuilder.build(agentDto).toByteArray();
+		
+		RestTemplate chatRestTemplate = new RestTemplate();
+		HttpEntity<byte[]> agentHttpEntityAsBytesArray = new HttpEntity<>(agentData);
+		chatRestTemplate.postForEntity("http://localhost:7070/Agent/GetByUserName/V01", agentHttpEntityAsBytesArray, HttpStatus.class);
+		
+		
+	}
+	public static void getWatingList() {
+		RestTemplate chatRestTemplate = new RestTemplate();
+		Object o = chatRestTemplate.getForEntity("http://localhost:7070/Customer/Waiting/List/V01", byte[].class);
+		System.out.println(o);
+	
+		
+	}
+	public static void getTemplateMsg() {
+		RestTemplate chatRestTemplate = new RestTemplate();
+		TemplateCategoryDomain templateCategoryDomain = new TemplateCategoryDomain();
+		TemplateCategoryEntityBuilder templateCategoryEntityBuilder = new TemplateCategoryEntityBuilder();
+		byte[] templateCategoryData = templateCategoryEntityBuilder.build(templateCategoryDomain).toByteArray();
+		
+		HttpEntity<byte[]> templateHttpAsBytesArray = new HttpEntity<>(templateCategoryData);
+		
+		chatRestTemplate.postForEntity("http://localhost:7070/Template/Category/List/V01", templateHttpAsBytesArray, byte[].class);
+//	
+	}
+	public static void getChatHistoryForSessionID() {
+		RestTemplate rs= new RestTemplate();
+//		ChatHistoryDomain chatHistoryDomain = new ChatHistoryDomain();
+//		ChatHistoryEntityBuilder chatHistoryEntityBuilder = new ChatHistoryEntityBuilder();
+//		ChatHistoryProtobuf.ChatHistoryProto chatHistoryData= chatHistoryEntityBuilder.build(chatHistoryDomain);
+//		
+//		HttpEntity<byte[]> chatHistoryHttpAsBytesArray = new HttpEntity<>(chatHistoryData.toByteArray());
+		rs.getForEntity("http://localhost:7070/Chat/History/Get/Conversation/0293d025-7d5c-40a1-90da-9fa53049223d/0/V01" , byte[].class);
+
+	}
+}
