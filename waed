@@ -1,0 +1,19 @@
+@ResponseBody
+	@GetMapping(value = "/Get/ByUserName/V01")
+	public AgentDTO getAgentByUserNameV01(HttpServletRequest request) {
+	
+			AgentDTO agentDto,agent = null;
+			try {
+				agentDto = agentEntityBuilder.convert(request.getInputStream());
+				Agent returenedAgent = agentManager.getAgentByUsername(agentDto.getUsername());
+				 agent = modelMapper.map(returenedAgent, AgentDTO.class);
+		
+//				agentDto.setUsername(agentDto.getUsername());
+//				agentDto.setName(agentDto.getName());
+//				agentDto.setActiveSessions(agentDto.getActiveSessions());
+//				agentDto.setMaxSessions(agentDto.getMaxSessions());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			return agent;
+	}
