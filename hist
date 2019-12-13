@@ -1,0 +1,15 @@
+public List<ChatHistoryDomain> getAllChatHistoryForSessionId(CustomerChatSession session, int index, String agentUsername) {
+
+		Agent agent = agentRepository.findByUsername(agentUsername);
+		
+		Pageable page = PageRequest.of(index, agent.getNumberOfChatHistory(), Sort.by("log").descending());
+		List<ChatHistory> chatHistoriesList = chatHistoryRepository.findAllByCustomerChatSession(session,page);
+
+		List<ChatHistoryDomain> chatHistoryDomainsList = new ArrayList<>();
+		for (ChatHistory chatHistory : chatHistoriesList) {
+
+			ChatHistoryDomain chatHistoryDomain = mapper.map(chatHistory, ChatHistoryDomain.class);
+			chatHistoryDomainsList.add(chatHistoryDomain);
+		}
+
+		return chatHistoryDomainsList;
